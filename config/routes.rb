@@ -1,6 +1,7 @@
 #require_relative '../lib/route_scoper'
 
 Rails.application.routes.draw do
+  devise_for :users
   #scope RouteScoper.root do
   #get 'welcome/index'
 
