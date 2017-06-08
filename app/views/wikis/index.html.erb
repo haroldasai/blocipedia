@@ -5,7 +5,11 @@
     <div class="media-body">
       <h4 class="media-heading">
  <!-- #8 -->
-        <%= link_to wiki.title, wiki %> -Created by&nbsp;<%= wiki.user.email %>
+        <% if wiki.user %>
+          <%= link_to wiki.title, wiki %> -Created by&nbsp;<%= wiki.user.email %>
+        <% else %>
+          <%= link_to wiki.title, wiki %> -Created by non-user
+        <% end %>  
       </h4>
       <small>
         <%= wiki.body %>
