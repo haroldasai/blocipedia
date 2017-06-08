@@ -1,0 +1,15 @@
+<h1>Wikis#index</h1>
+<%= link_to "New Wiki", new_wiki_path %>
+<% @wikis.each do |wiki| %>
+  <div class="media">
+    <div class="media-body">
+      <h4 class="media-heading">
+ <!-- #8 -->
+        <%= link_to wiki.title, wiki %> -Created by&nbsp;<%= wiki.user.email %>
+      </h4>
+      <small>
+        <%= wiki.body %>
+      </small>
+    </div>
+  </div>
+<% end %>

@@ -2,8 +2,6 @@ source 'https://rubygems.org'
  
  # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5'
-
-gem 'devise'
  
 group :production do
   gem 'pg'
@@ -26,10 +24,11 @@ gem 'figaro'
 group :development, :test do
   gem 'byebug'
   gem 'spring'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 3.0'
   gem 'shoulda'
   gem 'faker'
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', '~> 4.0'
   gem 'pry-rails'
 end
 
+gem 'devise'

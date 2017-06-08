@@ -1,13 +1,25 @@
 #require_relative '../lib/route_scoper'
 
 Rails.application.routes.draw do
+
+  resources :wikis
+
   devise_for :users
   #scope RouteScoper.root do
   #get 'welcome/index'
 
   #get 'welcome/about'
 
+  #authenticated do
+  #  root to: "wikis#index", as: :authenticated_root
+  #end
+
+   
+  get 'about' =>  'welcome#about'
+
   root 'welcome#index'
+
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
