@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe WikisController, type: :controller do
 
   let(:user) {User.create!(email: "blocipedia@bloc.com", password: "helloworld")}
+  let(:admin_user) {User.create!(email: "admin@bloc.com", password: "helloworld", admin: true)}
   let(:my_wiki) {Wiki.create!(title: "New Wiki Title", body: "This is New Wiki Body Sentence.", user: user)}
 
   describe "GET index" do
@@ -125,6 +126,61 @@ RSpec.describe WikisController, type: :controller do
       put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
       expect(response).to redirect_to my_wiki
     end
+  end
+
+  context "guest" do
+
+    describe "DELETE destroy" do
+      before do
+        Wiki.create!(title: "New Wiki Title", body: "This is New Wiki Body Sentence.", user: user)
+      end
+
+      it "doesn't allow user to delete wiki" do
+        before = Wiki.count
+        delete :destroy, {id: Wiki.last.id}
+        expect(Wiki.count).to eq(before)
+      end
+
+    end
+
+  end
+
+  context "free-user" do
+
+    describe "DELETE destroy" do
+      before do
+        Wiki.create!(title: "New Wiki Title", body: "This is New Wiki Body Sentence.", user: user)
+        user.confirm
+        sign_in user
+      end
+
+      it "doesn't allow user to delete wiki" do
+        before = Wiki.count
+        delete :destroy, {id: Wiki.last.id}
+        expect(Wiki.count).to eq(before)
+      end
+
+    end
+
+  end
+
+  context "admin-user" do
+
+    describe "DELETE destroy" do
+      before do
+        Wiki.create!(title: "New Wiki Title", body: "This is New Wiki Body Sentence.", user: user)
+        admin_user.confirm
+        sign_in admin_user
+      end
+
+      it "doesn't allow user to delete wiki" do
+        before = Wiki.count
+        delete :destroy, {id: Wiki.last.id}
+        expect(Wiki.count).to eq(before-1)
+      end
+
+    end
+
   end
 
 end

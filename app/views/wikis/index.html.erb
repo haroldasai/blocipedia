@@ -1,5 +1,7 @@
 <h1>Wikis#index</h1>
-<%= link_to "New Wiki", new_wiki_path %>
+<% if current_user.present? %>
+  <%= link_to "New Wiki", new_wiki_path %>
+<% end %>  
 <% @wikis.each do |wiki| %>
   <div class="media">
     <div class="media-body">
