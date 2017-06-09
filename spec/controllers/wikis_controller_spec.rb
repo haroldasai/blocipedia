@@ -130,22 +130,110 @@ RSpec.describe WikisController, type: :controller do
 
   context "guest" do
 
+    describe "Post create" do
+
+      it "doesn't allow guest to create wiki" do
+        before = Wiki.count
+        post :create, wiki: {title: RandomData.random_sentence, body: RandomData.random_paragraph}
+        expect(Wiki.count).to eq(before)
+      end
+      
+      it "redirects guest to new_user_registration_path" do
+        post :create, wiki: {title: RandomData.random_sentence, body: RandomData.random_paragraph}
+        expect(response).to redirect_to new_user_registration_path
+      end
+
+    end
+
+    describe "PUT update" do
+      it "doesn't allow guests to updates wiki" do
+        original_title = my_wiki.title
+        original_body = my_wiki.body
+        new_title = RandomData.random_sentence
+        new_body = RandomData.random_paragraph
+
+        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
+
+        updated_wiki = Wiki.find(my_wiki.id)
+        expect(updated_wiki.id).to eq my_wiki.id
+        expect(updated_wiki.title).to eq original_title
+        expect(updated_wiki.body).to eq original_body
+      end
+
+      it "redirects guest to the updated wiki" do
+        new_title = RandomData.random_sentence
+        new_body = RandomData.random_paragraph
+
+        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
+        expect(response).to redirect_to new_user_registration_path
+      end
+    end
+
     describe "DELETE destroy" do
       before do
         Wiki.create!(title: "New Wiki Title", body: "This is New Wiki Body Sentence.", user: user)
       end
 
-      it "doesn't allow user to delete wiki" do
+      it "doesn't allow guest to delete wiki" do
         before = Wiki.count
         delete :destroy, {id: Wiki.last.id}
         expect(Wiki.count).to eq(before)
       end
 
+      it "redirects guest to new_user_registration_path" do
+        delete :destroy, {id: Wiki.last.id}
+        expect(response).to redirect_to new_user_registration_path
+      end
     end
 
   end
 
   context "free-user" do
+
+    describe "Post create" do
+      before do
+        user.confirm
+        sign_in user
+      end
+
+      it "allows free-user to create wiki" do
+        before = Wiki.count
+        post :create, wiki: {title: RandomData.random_sentence, body: RandomData.random_paragraph}
+        expect(Wiki.count).to eq(before+1)
+      end
+
+      it "redirects free-user to new_wiki" do
+        post :create, wiki: {title: RandomData.random_sentence, body: RandomData.random_paragraph}
+        expect(response).to redirect_to Wiki.last
+      end
+    end
+
+    describe "PUT update" do
+      before do
+        user.confirm
+        sign_in user
+      end
+
+      it "allows free-user to updates wiki" do
+        new_title = RandomData.random_sentence
+        new_body = RandomData.random_paragraph
+
+        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
+
+        updated_wiki = assigns(:wiki)
+        expect(updated_wiki.id).to eq my_wiki.id
+        expect(updated_wiki.title).to eq new_title
+        expect(updated_wiki.body).to eq new_body
+      end
+
+      it "redirects free-user to the updated wiki" do
+        new_title = RandomData.random_sentence
+        new_body = RandomData.random_paragraph
+
+        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
+        expect(response).to redirect_to my_wiki
+      end
+    end
 
     describe "DELETE destroy" do
       before do
@@ -154,7 +242,7 @@ RSpec.describe WikisController, type: :controller do
         sign_in user
       end
 
-      it "doesn't allow user to delete wiki" do
+      it "doesn't allow free-user to delete wiki" do
         before = Wiki.count
         delete :destroy, {id: Wiki.last.id}
         expect(Wiki.count).to eq(before)
@@ -166,6 +254,51 @@ RSpec.describe WikisController, type: :controller do
 
   context "admin-user" do
 
+    describe "Post create" do
+      before do
+        admin_user.confirm
+        sign_in admin_user
+      end
+
+      it "allows admin-user to create wiki" do
+        before = Wiki.count
+        post :create, wiki: {title: RandomData.random_sentence, body: RandomData.random_paragraph}
+        expect(Wiki.count).to eq(before+1)
+      end
+
+      it "redirects admin-user to new_wiki" do
+        post :create, wiki: {title: RandomData.random_sentence, body: RandomData.random_paragraph}
+        expect(response).to redirect_to Wiki.last
+      end
+    end
+
+    describe "PUT update" do
+      before do
+        admin_user.confirm
+        sign_in admin_user
+      end
+
+      it "allows admin-user to updates wiki" do
+        new_title = RandomData.random_sentence
+        new_body = RandomData.random_paragraph
+
+        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
+
+        updated_wiki = assigns(:wiki)
+        expect(updated_wiki.id).to eq my_wiki.id
+        expect(updated_wiki.title).to eq new_title
+        expect(updated_wiki.body).to eq new_body
+      end
+
+      it "redirects admin-user to the updated wiki" do
+        new_title = RandomData.random_sentence
+        new_body = RandomData.random_paragraph
+
+        put :update, id: my_wiki.id, wiki: {title: new_title, body: new_body}
+        expect(response).to redirect_to my_wiki
+      end
+    end
+
     describe "DELETE destroy" do
       before do
         Wiki.create!(title: "New Wiki Title", body: "This is New Wiki Body Sentence.", user: user)
@@ -173,10 +306,15 @@ RSpec.describe WikisController, type: :controller do
         sign_in admin_user
       end
 
-      it "doesn't allow user to delete wiki" do
+      it "allows admin-user to delete wiki" do
         before = Wiki.count
         delete :destroy, {id: Wiki.last.id}
         expect(Wiki.count).to eq(before-1)
+      end
+      
+      it "redirects admin-user to wikis_path" do
+        delete :destroy, {id: Wiki.last.id}
+        expect(response).to redirect_to wikis_path
       end
 
     end
