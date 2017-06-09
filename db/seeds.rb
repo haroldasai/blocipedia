@@ -8,25 +8,47 @@ require 'random_data'
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # Create Users
-5.times do
-  User.create!(
-    email:    RandomData.random_email,
-    password: RandomData.random_sentence
-  )
+if ENV["random"]
+
+	5.times do
+	  User.create!(
+	    email:    RandomData.random_email,
+	    password: RandomData.random_sentence
+	  )
+	end
+	users = User.all
+
+
+	# Create Posts
+	50.times do
+
+	  wiki = Wiki.create!(
+	    user:   users.sample,
+	    title:  RandomData.random_sentence,
+	    body:   RandomData.random_paragraph
+	  )
+
+	end
+
 end
-users = User.all
 
+if ENV["faker"]
+	1.times do
+	  User.create!(
+	    email:    Faker::Internet.unique.email,
+	    password: Faker::Crypto.md5
+	  )
+	end
+	users = User.all
 
-# Create Posts
-50.times do
-
-  wiki = Wiki.create!(
-    user:   users.sample,
-    title:  RandomData.random_sentence,
-    body:   RandomData.random_paragraph
-  )
-
-end
+  1.times do
+	  wiki = Wiki.create!(
+	    user:   users.sample,
+	    title:  Faker::Music.unique.instrument,
+	    body:   Faker::HarryPotter.unique.quote
+	  )
+	end
+end	
 
 #wikis = wiki.all
 
