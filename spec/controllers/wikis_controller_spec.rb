@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe WikisController, type: :controller do
 
   let(:user) {User.create!(email: "blocipedia@bloc.com", password: "helloworld")}
-  let(:admin_user) {User.create!(email: "admin@bloc.com", password: "helloworld", admin: true)}
+  let(:admin_user) {User.create!(email: "admin@bloc.com", password: "helloworld", role: 2)}
   let(:my_wiki) {Wiki.create!(title: "New Wiki Title", body: "This is New Wiki Body Sentence.", user: user)}
 
   describe "GET index" do
