@@ -22,8 +22,10 @@ class ChargesController < ApplicationController
       description: "BigMoney Membership - #{current_user.email}",
       currency: 'usd'
     )
+
+    User.find(current_user.id).update_attribute(:role, 1)
  
-    flash[:notice] = "Thanks for all the money, #{current_user.email}! Feel free to pay me again."
+    flash[:notice] = "Thanks for your payment, #{current_user.email}! You have upgraded to premium membership."
     redirect_to root_path # or wherever
  
     # Stripe will send back CardErrors, with friendly messages

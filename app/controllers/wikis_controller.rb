@@ -16,7 +16,13 @@ class WikisController < ApplicationController
     authorize @wiki
   	@wiki.title = params[:wiki][:title]
   	@wiki.body = params[:wiki][:body]
-  	@wiki.user = current_user
+    if current_user.premium? || current_user.admin?
+      @wiki.private = params[:wiki][:private]
+  	else
+      @wiki.private = false  
+    end
+    
+    @wiki.user = current_user  
 
     if @wiki.save
       redirect_to @wiki, notice: "Wiki was saved successfully."

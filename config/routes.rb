@@ -9,6 +9,11 @@ Rails.application.routes.draw do
   resources :wikis
 
   devise_for :users
+  resources :users, :only => [:show]
+
+  #resources :users, only: [:show] do
+  put 'users/:id/downgrade' => 'users#downgrade', as: :user_downgrade 
+  #end  
   #scope RouteScoper.root do
   #get 'welcome/index'
 

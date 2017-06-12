@@ -12,6 +12,8 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized
   	if current_user.present?
+      flash[:alert] = "You are not authorized to perform this action."
+      redirect_to user_path(current_user)
   	else	
       flash[:alert] = "You need to sign up to perform this action."
       redirect_to(new_user_registration_path)

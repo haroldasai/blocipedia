@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-8">
+    <div class="media">
+      <br />
+      <% avatar_url = @user.avatar_url(128) %>
+      <% if avatar_url %>
+        <div class="media-left">
+          <%= image_tag avatar_url, class: 'media-object' %>
+        </div>
+      <% end %>
+      <div class="media-body">
+        <h2 class="media-heading"><%= @user.email %></h2>
+        <% if @user.member? %>
+          <h4>Standard User</h4>
+        <% elsif @user.premium? %>
+          <h4>Premium User</h4>
+        <% elsif @user.admin? %>
+          <h4>admin</h4>
+        <% end %>    
+        <small>
+          <%= pluralize(@user.wikis.count, 'wiki') %>,
+        </small>
+      </div>
+      <% if current_user.member? %>
+        <%= link_to "Upgrade to premium membership", new_charge_path, class: 'btn btn-success' %>
+      <% elsif current_user.premium? %>
+        <%= link_to "Downgrade to standard membership", user_downgrade_path, method: :put, class: 'btn btn-success', data: { confirm: 'Are you sure you want to downgrade your membership?' }  %>
+      <% end %>
+    </div>
+  </div>
+</div>
