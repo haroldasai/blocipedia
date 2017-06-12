@@ -5,17 +5,32 @@
 <% @wikis.each do |wiki| %>
   <div class="media">
     <div class="media-body">
-      <h4 class="media-heading">
- <!-- #8 -->
-        <% if wiki.user %>
-          <%= link_to wiki.title, wiki %> -Created by&nbsp;<%= wiki.user.email %>
-        <% else %>
-          <%= link_to wiki.title, wiki %> -Created by non-user
+      <% if current_user.present? && (current_user.premium? || current_user.admin?) %>
+        <h4 class="media-heading">
+ <!-- #8 -->        
+          <% if wiki.user %>
+            <%= link_to wiki.title, wiki %> -Created by&nbsp;<%= wiki.user.email %>
+          <% else %>
+            <%= link_to wiki.title, wiki %> -Created by non-user
+          <% end %>        
+        </h4>
+        <small>
+          <%= wiki.body %>
+        </small>
+      <% else %>
+        <% if wiki.private == false %>
+          <h4 class="media-heading">
+            <% if wiki.user %>
+              <%= link_to wiki.title, wiki %> -Created by&nbsp;<%= wiki.user.email %>
+            <% else %>
+              <%= link_to wiki.title, wiki %> -Created by non-user
+            <% end %>
+          </h4>        
+          <small>
+            <%= wiki.body %>
+          </small>
         <% end %>  
-      </h4>
-      <small>
-        <%= wiki.body %>
-      </small>
+      <% end %>          
     </div>
   </div>
 <% end %>

@@ -24,7 +24,7 @@
       <% if current_user.member? %>
         <%= link_to "Upgrade to premium membership", new_charge_path, class: 'btn btn-success' %>
       <% elsif current_user.premium? %>
-        <%= link_to "Downgrade to standard membership", user_downgrade_path, method: :put, class: 'btn btn-success', data: { confirm: 'Are you sure you want to downgrade your membership?' }  %>
+        <%= link_to "Downgrade to standard membership", user_downgrade_path, method: :put, class: 'btn btn-success', data: { confirm: 'Are you sure you want to downgrade your membership? *Note that all your private wikis will become public after downgrade.' }  %>
       <% end %>
     </div>
   </div>
