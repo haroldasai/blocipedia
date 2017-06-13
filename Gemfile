@@ -34,3 +34,4 @@ end
 gem 'devise'
 gem 'pundit'
 gem 'stripe'
+gem 'redcarpet', '~> 3.4.0'

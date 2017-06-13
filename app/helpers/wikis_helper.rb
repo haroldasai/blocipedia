@@ -1,2 +1,2 @@
-module WikisHelper
+module WikisHelper    
 end

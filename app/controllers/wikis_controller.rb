@@ -14,6 +14,7 @@ class WikisController < ApplicationController
   def create
   	@wiki = Wiki.new
     authorize @wiki
+
   	@wiki.title = params[:wiki][:title]
   	@wiki.body = params[:wiki][:body]
     if current_user.premium? || current_user.admin?

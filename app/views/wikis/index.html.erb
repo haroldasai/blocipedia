@@ -15,7 +15,7 @@
           <% end %>        
         </h4>
         <small>
-          <%= wiki.body %>
+          <%= markdown(wiki.body) %>
         </small>
       <% else %>
         <% if wiki.private == false %>
@@ -27,7 +27,7 @@
             <% end %>
           </h4>        
           <small>
-            <%= wiki.body %>
+            <%= markdown(wiki.body) %>
           </small>
         <% end %>  
       <% end %>          
