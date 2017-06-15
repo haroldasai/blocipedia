@@ -14,3 +14,13 @@
   <% end %>
 </h5>
 <p><%= markdown(@wiki.body) %></p>
+
+<% if @wiki.private? %>
+  <h4>Collaborators:</h4>
+  <ul>
+    <% @wiki.users.each do |user| %>
+     <li><%= user.email %></li>
+    <% end %>
+  </ul>
+<% end %>
+    

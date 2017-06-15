@@ -1,0 +1,6 @@
+<%= form_for [wiki, collaboration] do |f| %> 
+  <div class="user-list-div">
+    <%= f.collection_select(:user_id, users, :id, :email, {:prompt=>false}, {:size=>'8', :class=>'user-select-box'}) %>
+  </div>  
+  <%= f.submit "Add collaborator" %>
+<% end %>  

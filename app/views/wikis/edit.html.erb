@@ -15,5 +15,19 @@
       <% end %>
     </div>
   <% end %> 
-  <%= f.submit "Save", class: 'btn btn-success' %>
+  <%= f.submit "Save", class: 'wiki-edit-save' %>
 <% end %>
+
+  <% if @wiki.private? %>
+    <div class="available-users">
+      </br>
+      <label>Available Users:</label>
+        <%= render partial: 'collaborations/add_collaborators', locals: { wiki: @wiki, collaboration: @collaboration, users: @users} %>
+    </div>
+    <div class="collaborators">
+      </br>
+      <label>Collaborators:</label>
+        <%= render partial: 'collaborations/collaborators', locals: { wiki: @wiki, collaboration: @collaboration } %>
+    </div>
+  <% end %>
+
