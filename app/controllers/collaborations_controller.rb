@@ -41,6 +41,21 @@ class CollaborationsController < ApplicationController
     end
   end
 
+  def create_multiple
+  	@wiki = Wiki.find(params[:id])
+  	collaborators = params[:collaborators]
+    collaborators.each do |collaborator|
+      @collaboration = @wiki.collaborations.build(:user_id => collaborator)
+      if @collaboration.save
+      	flash[:notice] = "New collaborator was added."
+      else
+        flash.now[:alert] = "There was an error adding collaborator. Please try again."
+        break
+      end
+    end
+    redirect_to edit_wiki_path(@wiki)
+  end
+
   private
  
   def collaboration_params

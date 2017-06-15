@@ -1,11 +1,9 @@
 <%= form_tag d_m_collaborations_path, method: :delete do %> 
-  <table>
+  <ul class="user-list">
     <% wiki.collaborations.each do |collaboration| %>
-      <tr>
-        <td><%= check_box_tag "collaborations[]", collaboration.id %><%= wiki.users.find(collaboration.user_id).email%></td>
-      </tr>
+      <li><%= check_box_tag "collaborations[]", collaboration.id %><%= wiki.users.find(collaboration.user_id).email %></li>
     <% end %>  
-  </table>  
+  </ul>  
   <%= submit_tag "Remove collaborator" %>
 <% end %>
  

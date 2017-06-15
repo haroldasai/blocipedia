@@ -65,8 +65,6 @@ class WikisController < ApplicationController
   	@wiki.body = params[:wiki][:body]
     if (@wiki.user.id == current_user.id && current_user.premium?) || current_user.admin?
       @wiki.private = params[:wiki][:private]
-    else
-      @wiki.private = false  
     end
  
     if @wiki.save

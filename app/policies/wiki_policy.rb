@@ -5,7 +5,11 @@ class WikiPolicy < ApplicationPolicy
   end	
 
   def update?
-  	user.present?
+  	if record.private?
+  		record.user == user || record.users.include?(user)
+  	else	
+  	  user.present?
+  	end  
   end
 
   def destroy?

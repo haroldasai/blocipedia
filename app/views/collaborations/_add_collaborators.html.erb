@@ -1,6 +1,8 @@
-<%= form_for [wiki, collaboration] do |f| %> 
-  <div class="user-list-div">
-    <%= f.collection_select(:user_id, users, :id, :email, {:prompt=>false}, {:size=>'8', :class=>'user-select-box'}) %>
-  </div>  
-  <%= f.submit "Add collaborator" %>
-<% end %>  
+<%= form_tag c_m_collaborations_path, method: :post do %> 
+  <ul class="user-list">
+    <% users.each do |user| %>
+        <li><%= check_box_tag "collaborators[]", user.id %><%= user.email %></li>
+    <% end %>  
+  </ul>  
+  <%= submit_tag "Add collaborator" %>
+<% end %>

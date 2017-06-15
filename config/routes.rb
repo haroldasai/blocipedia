@@ -8,9 +8,9 @@ Rails.application.routes.draw do
 
   resources :wikis
 
-  resources :wikis, only: [] do
-    resources :collaborations, only: [:create]
-  end
+  #resources :wikis, only: [] do
+  #  resources :collaborations, only: [:create]
+  #end
 
  # resources :wikis, only: [] do
  #   resources :collaborations, only:[] do
@@ -21,7 +21,7 @@ Rails.application.routes.draw do
  # end
 
   delete 'wikis/:id/collaborations/destroy_multiple' => 'collaborations#destroy_multiple', as: :d_m_collaborations
-  #post   'wikis/:id/collaborations/create_multiple' => 'collaborations#create_multiple', as: :c_m_collaborations
+  post   'wikis/:id/collaborations/create_multiple' => 'collaborations#create_multiple', as: :c_m_collaborations
 
 
   devise_for :users
