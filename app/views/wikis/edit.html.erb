@@ -4,10 +4,16 @@
     <%= f.label :title %>
     <%= f.text_field :title, class: 'form-control', placeholder: "Enter wiki name" %>
   </div>
+
+ 
   <div class="form-group">
     <%= f.label :body %>
-    <%= f.text_area :body, rows: 8, class: 'form-control', placeholder: "Enter wiki description" %>
+    <div id="epiceditor">
+      <%= f.text_area :body, class: 'form-control', placeholder: "Enter wiki description" %>
+    </div>
   </div>
+  
+
   <% if (@wiki.user.id == current_user.id && current_user.premium?) || current_user.admin? %>
     <div class="form-group">
       <%= f.label :private, class: 'checkbox' do %>
@@ -31,3 +37,13 @@
     </div>
   <% end %>
 
+<script>
+  var editor = new EpicEditor({
+    theme: {      
+      editor: '<%= asset_path 'editor/epic-light.css' %>',
+      preview: '<%= asset_path 'preview/bartik.css' %>'
+    }
+    , focusOnLoad: true
+  }).load(function () {
+  console.log("Editor loaded.")});
+</script>
